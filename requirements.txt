@@ -1,0 +1,4 @@
+python-lambda
+requests
+boto3
+mechanize
