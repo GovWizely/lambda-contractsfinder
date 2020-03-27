@@ -4,7 +4,7 @@ from service import get_entries, handler
 
 
 def test_get_entries():
-    """Reads from the `test_get_entries` cassette and processes the entries.
+    """Asserts call to get_entries returns successfully and is not empty.
     """
     assert get_entries()
 
