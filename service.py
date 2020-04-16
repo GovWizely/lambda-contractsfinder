@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 import csv
 import datetime
+import io
 import json
 import logging
 
 import boto3
-import mechanize
+import mechanicalsoup
 from botocore.exceptions import ClientError
 
 BUCKET = "trade-leads"
@@ -96,29 +97,26 @@ def get_entries():
     items = []
     running = True
     published_to = datetime.datetime.now().strftime("%Y-%m-%d")
-    br = mechanize.Browser()
-    br.set_handle_robots(False)
-    br.set_header("User-Agent", USER_AGENT)
+    br = mechanicalsoup.StatefulBrowser(user_agent=USER_AGENT)
     len_with_dupes = 0
     while running:
         print(f"Loading HTML form from {HTML_FORM}...")
         br.open(HTML_FORM)
-        br.select_form(name="search")
+        br.select_form()
         br["published_from"] = PUBLISHED_FROM
         br["published_to"] = published_to
         print(f"Submitting form for date range {PUBLISHED_FROM} to {published_to}")
-        br.submit()
+        br.submit_selected()
         print("Fetching CSV file of up to ~1000 items")
-        doc = br.retrieve(CSV_DOWNLOAD)
-        with open(doc[0], "r") as csvfile:
-            csvfile_str = csvfile
-            reader = csv.DictReader(csvfile_str, fieldnames=NORMALIZED_FIELDNAMES)
-            rows = [row for row in reader if sane(row)]
-            print(f"Received {len(rows)} items from {PUBLISHED_FROM} to {published_to}")
-            items.extend(rows)
-            published_to = rows[-1]["published_date"][0:10]
-            if len(rows) < 1000:
-                running = False
+        doc = br.download_link(link=CSV_DOWNLOAD)
+        str_io = io.StringIO(doc.text)
+        reader = csv.DictReader(str_io, fieldnames=NORMALIZED_FIELDNAMES)
+        rows = [row for row in reader if sane(row)]
+        print(f"Received {len(rows)} items from {PUBLISHED_FROM} to {published_to}")
+        items.extend(rows)
+        published_to = rows[-1]["published_date"][0:10]
+        if len(rows) < 1000:
+            running = False
         len_with_dupes = len(items)
         items = list({v["notice_identifier"]: v for v in items}.values())
     print(f"Length with dupes: {len_with_dupes}; De-duped: {len(items)}")
