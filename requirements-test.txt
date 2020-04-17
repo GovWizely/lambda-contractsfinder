@@ -1,4 +1,5 @@
 -r requirements.txt
+-r requirements-dev.txt
 flake8==3.7.9
 flake8-formatter-junit-xml==0.0.6
 flake8-import-order==0.18.1
