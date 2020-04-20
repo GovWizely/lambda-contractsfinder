@@ -14,6 +14,7 @@ border dates, so the accrued list of dicts gets de-duped before going to S3.
 ## Prerequisites
 
 - This project is tested against Python 3.7+ in [CircleCI](https://app.circleci.com/github/GovWizely/lambda-contractsfinder/pipelines).
+- Docker
 
 ## Getting Started
 
@@ -40,7 +41,18 @@ python -m pytest
 	lambda invoke -v
  
 ## Deploy
-    
+
+This project uses `MechanicalSoup` to parse XML, which uses `lxml` under the hood. That library must be built with C extensions for `libxml2` and `libxslt` in a way that is compatible with the Amazon Lambda execution environment.
+
+To build the necessary libraries for Amazon's Python 3.8 runtime:
+
+    docker build -t contractsfinder .
+    docker run -v $(pwd):/outputs -it contractsfinder pip install --upgrade -r requirements.txt -t /outputs/
+
 To deploy:
 
-	lambda deploy --requirements requirements.txt
+	lambda deploy --requirements requirements-dev.txt
+
+Clean up the locally created files and directories:
+
+    git clean -fd

@@ -5,6 +5,7 @@ handler: service.handler
 role: lambda_api
 description: Builds a single JSON document of UK trade leads and stores it in S3
 runtime: python3.8
-
+build:
+  source_directories: lxml,bs4,certifi,chardet,idna,mechanicalsoup,six,soupsieve,urllib3,boto3,botocore,dateutil,docutils,jmespath,requests,s3transfer
 timeout: 300
 memory_size: 128
