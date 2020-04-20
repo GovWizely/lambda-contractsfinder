@@ -1,1 +1,1 @@
-python-lambda==3.2.6
+python-lambda==11.7.1
