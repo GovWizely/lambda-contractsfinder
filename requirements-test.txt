@@ -3,7 +3,7 @@
 flake8==3.8.2
 flake8-formatter-junit-xml==0.0.6
 flake8-import-order==0.18.1
-freezegun==1.0.0
+freezegun==1.1.0
 pytest==6.2.2
 pytest-cov==2.9.0
 pytest-mock==3.5.0
