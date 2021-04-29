@@ -1,0 +1,28 @@
+version: 2
+updates:
+- package-ecosystem: pip
+  directory: "/"
+  schedule:
+    interval: monthly
+    time: "11:00"
+    timezone: America/Los_Angeles
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: boto3
+    versions:
+    - "> 1.13.0, < 1.14"
+  - dependency-name: flake8
+    versions:
+    - "> 3.8.2, < 3.9"
+  - dependency-name: pytest
+    versions:
+    - "> 5.4.2, < 5.5"
+  - dependency-name: pytest-cov
+    versions:
+    - ">= 2.10.a, < 2.11"
+  - dependency-name: pytest-mock
+    versions:
+    - "> 3.1.0, < 3.2"
+  - dependency-name: boto3
+    versions:
+    - 1.17.17
