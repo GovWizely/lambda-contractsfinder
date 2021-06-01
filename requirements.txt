@@ -1,2 +1,2 @@
 boto3==1.17.84
-MechanicalSoup==1.0.0
+MechanicalSoup==1.1.0
