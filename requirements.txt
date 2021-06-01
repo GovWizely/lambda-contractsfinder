@@ -1,2 +1,2 @@
-boto3==1.17.42
+boto3==1.17.84
 MechanicalSoup==1.0.0
