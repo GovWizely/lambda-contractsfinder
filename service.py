@@ -19,7 +19,9 @@ USER_AGENT = (
 URL_PREFIX = "https://www.contractsfinder.service.gov.uk/Search/"
 HTML_FORM = URL_PREFIX + "Results"
 CSV_DOWNLOAD = URL_PREFIX + "GetCsvFile"
+
 PUBLISHED_FROM = "2008-01-01"
+
 NORMALIZED_FIELDNAMES = (
     "notice_identifier",
     "notice_type",
@@ -47,6 +49,7 @@ NORMALIZED_FIELDNAMES = (
     "start_date",
     "end_date",
     "closing_date",
+    "closing_time",
     "is_sub_contract",
     "parent_reference",
     "suitable_for_sme",
@@ -103,8 +106,12 @@ def get_entries():
         print(f"Loading HTML form from {HTML_FORM}...")
         br.open(HTML_FORM)
         br.select_form()
-        br["published_from"] = PUBLISHED_FROM
-        br["published_to"] = published_to
+        br["published_from[day]"] = PUBLISHED_FROM[:4]
+        br["published_from[month]"] = PUBLISHED_FROM[5:7]
+        br["published_from[year]"] = PUBLISHED_FROM[8:10]
+        br["published_to[day]"] = published_to[:4]
+        br["published_to[month]"] = published_to[5:7]
+        br["published_to[year]"] = published_to[8:10]
         print(f"Submitting form for date range {PUBLISHED_FROM} to {published_to}")
         br.submit_selected()
         print("Fetching CSV file of up to ~1000 items")
