@@ -7,4 +7,4 @@ freezegun==1.1.0
 pytest==6.2.5
 pytest-cov==2.12.1
 pytest-mock==3.6.1
-vcrpy==4.1.1
+vcrpy==4.2.0
